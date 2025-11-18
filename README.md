@@ -34,3 +34,16 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+NFTMANAGER_ADDRESS="0xd07E1979399a7a1Cc6D8A981B5B195bA801e10F3"
+USDC = "0x3600000000000000000000000000000000000000";
+
+    "@apollo/client": "^3.12.3"
+   "@rainbow-me/rainbowkit": "^2.2.1",
+    "dotenv": "^16.4.7",
+    "ethers": "^6.13.4",
+    "graphql": "^16.10.0",
+    "lucide-react": "^0.469.0",
+    "pinata-web3": "^0.5.4",
+    "wagmi": "^2.14.6"
