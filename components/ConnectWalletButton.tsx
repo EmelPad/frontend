@@ -28,9 +28,11 @@ const ConnectWalletButton = () => {
             const btnStyle = {
           background: "white",
           color: "black",
-          padding: "10px 20px",
+          padding: "5px 10px",
           border: "1px solid #ddd",
+          borderRadius: "9999px",
           cursor: "pointer",
+
         };
 
         return (
@@ -60,50 +62,65 @@ const ConnectWalletButton = () => {
                     color: "white",
                     padding: "10px 20px",
                     border: "1px solid #ddd",
+                    borderRadius: "9999px",
                     cursor: "pointer",
                   }}>
                     Wrong network
                   </button>
                 );
               }
-              return (
-                <div style={{ display: 'flex', gap: 12 }}>
-                  <button
-                    onClick={openChainModal}
-                    style={btnStyle}
-                    type="button"
+           
+return (
+  <>
+    {/* Mobile View — only address */}
+    <button
+      onClick={openAccountModal}
+      type="button"
+      style={btnStyle}
+      className="block md:hidden"
+    >
+      {account.displayName}
+    </button>
 
-                  >
-                    {chain.hasIcon && (
-                      <div
-                        style={{
-                          background: chain.iconBackground,
-                          width: 12,
-                          height: 12,
-                          borderRadius: 999,
-                          overflow: 'hidden',
-                          marginRight: 4,
-                        }}
-                      >
-                        {chain.iconUrl && (
-                          <img
-                            alt={chain.name ?? 'Chain icon'}
-                            src={chain.iconUrl}
-                            style={{ width: 12, height: 12 }}
-                          />
-                        )}
-                      </div>
-                    )}
-                    {chain.name}
-                  </button>
-                  <button onClick={openAccountModal} type="button" style={btnStyle}>
-                    {account.displayName}
-                    {account.displayBalance
-                      ? ` (${account.displayBalance})`
-                      : ''}
-                  </button>
-                </div>
-              );
+    {/* Desktop View */}
+    <div className="hidden md:flex gap-3">
+      <button
+        onClick={openChainModal}
+        type="button"
+        style={btnStyle}
+      >
+        {chain.hasIcon && (
+          <div
+            style={{
+              background: chain.iconBackground,
+              width: 12,
+              height: 12,
+              borderRadius: 999,
+              overflow: 'hidden',
+              marginRight: 4,
+            }}
+          >
+            {chain.iconUrl && (
+              <img
+                alt={chain.name ?? 'Chain icon'}
+                src={chain.iconUrl}
+                style={{ width: 12, height: 12 }}
+              />
+            )}
+          </div>
+        )}
+        {chain.name}
+      </button>
+
+      <button onClick={openAccountModal} type="button" style={btnStyle}>
+        {account.displayName}
+        {account.displayBalance ? ` (${account.displayBalance})` : ''}
+      </button>
+    </div>
+  </>
+);
+
+
             })()}
           </div>
         );
@@ -113,3 +130,45 @@ const ConnectWalletButton = () => {
 };
 
 export default ConnectWalletButton;
+
+
+
+
+ //   return (
+            //     <div style={{ display: 'flex', gap: 12 }}>
+            //       <button
+            //         onClick={openChainModal}
+            //         style={btnStyle}
+            //         type="button"
+
+            //       >
+            //         {chain.hasIcon && (
+            //           <div
+            //             style={{
+            //               background: chain.iconBackground,
+            //               width: 12,
+            //               height: 12,
+            //               borderRadius: 999,
+            //               overflow: 'hidden',
+            //               marginRight: 4,
+            //             }}
+            //           >
+            //             {chain.iconUrl && (
+            //               <img
+            //                 alt={chain.name ?? 'Chain icon'}
+            //                 src={chain.iconUrl}
+            //                 style={{ width: 12, height: 12 }}
+            //               />
+            //             )}
+            //           </div>
+            //         )}
+            //         {chain.name}
+            //       </button>
+            //       <button onClick={openAccountModal} type="button" style={btnStyle}>
+            //         {account.displayName}
+            //         {account.displayBalance
+            //           ? ` (${account.displayBalance})`
+            //           : ''}
+            //       </button>
+            //     </div>
+            //   );

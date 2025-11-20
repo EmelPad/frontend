@@ -1,12 +1,13 @@
 
-import Image from 'next/image';
+import Hero from '@/components/Hero';
+
 
 export default function Home() {
     return (
         <div className="text-white p-2 font-sans">
             
-            {/* <Hero />
-            <Collections /> */}
+            <Hero />
+            {/* <Collections />  */}
         </div>
     );
 }
