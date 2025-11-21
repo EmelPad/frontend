@@ -1,4 +1,5 @@
 import { useImageLoader } from '@/hooks/useImageLoader';
+import { formatRelativeTime } from '@/utils';
 import { X, CheckCircle, Copy, ExternalLink } from 'lucide-react';
 import { useState } from 'react';
 
@@ -38,7 +39,7 @@ function CreateSuccessModal({ isOpen, onClose, eventObj }: CreateSuccessModalPro
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 font-roboto">
       <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 sm:px-8 sm:py-6 flex items-center justify-between">
@@ -114,7 +115,11 @@ function CreateSuccessModal({ isOpen, onClose, eventObj }: CreateSuccessModalPro
               </div>
               <div>
                 <p className="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-1">Created</p>
-                <p className="text-sm text-gray-700">{new Date(eventObj.createdAt * 1000).toLocaleDateString()}</p>
+                <p className="text-sm text-gray-700">
+                    {/* {new Date(eventObj.createdAt * 1000).toLocaleDateString()} */}
+                    {Number(eventObj.createdAt) == 0 ? 0 : formatRelativeTime(Number(eventObj.createdAt)) }
+                    
+                    </p>
               </div>
             </div>
           </div>

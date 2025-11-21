@@ -44,31 +44,31 @@ const Header = () => {
         <div className="fixed inset-0 top-16 bg-black/95 backdrop-blur-sm">
           <nav className="max-w-6xl mx-auto px-4 py-6 space-y-2">
             {/* Create Collection */}
-            <a
+            <Link
              href="/create"
              onClick={() => setIsMenuOpen(false)}
              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-linear-to-r from-white to-gray-300 hover:from-gray-100 hover:to-gray-400 text-black font-semibold transition-all duration-200">
               <Plus className="w-5 h-5" />
               Create Collection
-            </a>
+            </Link>
 
             {/* Profile */}
-            <a
+            <Link
               href="/profile"
               onClick={() => setIsMenuOpen(false)}
               className="w-full block px-4 py-3 rounded-lg bg-linear-to-br from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800 border border-gray-700 text-gray-200 font-medium transition-all duration-200"
             >
               Profile
-            </a>
+            </Link>
 
             {/* Activity */}
-            <a
+            <Link
               href="/activity"
               onClick={() => setIsMenuOpen(false)}
               className="w-full block px-4 py-3 rounded-lg bg-linear-to-br from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800 border border-gray-700 text-gray-200 font-medium transition-all duration-200"
             >
               Activity
-            </a>
+            </Link>
 
             {/* Premium Mint - Disabled */}
             <div

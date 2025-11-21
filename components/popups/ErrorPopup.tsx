@@ -1,6 +1,5 @@
 import React from 'react';
 import { X } from 'lucide-react';
-import { usePopup } from '@/hooks/usePopup';
 
 interface ErrorPopupProps {
   isOpen: boolean,

@@ -29,12 +29,6 @@ interface CollectionEventObj {
   imageURI: string;
 }
 
-interface Step {
-  id: string;
-  label: string;
-  status: 'pending' | 'in-progress' | 'completed' | 'error';
-  message?: string;
-}
 
 const page: React.FC = () => {
 
@@ -47,9 +41,6 @@ const page: React.FC = () => {
         totalSupply: '',
     });
     const [imageFile, setImageFile] = useState<File | null>(null);
-    const [steps, setSteps] = useState<Array<Step>>([
-        // {id: 'pin-image', label: 'Pinning Image to IPFS', status: 'in-progress'}
-    ]);
 
     const { isOpen: isErrorOpen, openPopup: openErrorPopup, closePopup: closeErrorPopup } = useErrorPopup();
     const { isOpen: isToastOpen, openPopup: openToastPopup, closePopup: closeToastPopup } = useToastify();
@@ -74,20 +65,10 @@ const page: React.FC = () => {
     });
 
 
-    const updateStep = (stepId: string, label: string, status: Step['status'], message?: string) => {
-        setSteps(prev => [
-            ...prev,
-            { id: stepId, label, status, message }
-        ]);
-    };
-
-
-
 
 
     const handleCreateCollection = async(name: string, symbol: string, description: string, price: string, totalSupply: string, imageFile: File) => {
         console.log("HandleCreateCollection...");
-        setSteps(() => []);
         
         const priceInWei = parseUnits(price, 6);
         console.log({name, symbol, description, priceInWei, totalSupply});
@@ -130,7 +111,6 @@ const page: React.FC = () => {
             imageURI: events[0].args[8],
 
         };
-        updateStep('success', 'Collection Deployed Successfully','completed');
         return eventObj;
         
     }
@@ -313,7 +293,6 @@ const page: React.FC = () => {
                 isOpen={isModalOpen} 
                 onClose={() => {
                     setIsModalOpen(false);
-                    setSteps(() => []);
                 }} 
                 eventObj={eventObj}
              /> 

@@ -4,6 +4,8 @@ import { WagmiProvider } from "wagmi";
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { wagmiConfig } from '@/config/wagmi';
+import { ApolloProvider } from '@apollo/client/react';
+import { client } from "@/lib/apollo-client";
 
 
 
@@ -17,9 +19,11 @@ export default function Providers({
   return (
     <WagmiProvider config={wagmiConfig}>
         <QueryClientProvider client={queryClient}>
+            <ApolloProvider client={client}>
             <RainbowKitProvider>
                 {children}
             </RainbowKitProvider>
+            </ApolloProvider>
         </QueryClientProvider>
     </WagmiProvider>
   );
