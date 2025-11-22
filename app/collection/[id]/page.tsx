@@ -1,5 +1,4 @@
 
-
 'use client';
 import React, { useEffect, useState } from 'react';
 import { gql } from "@apollo/client";
@@ -15,8 +14,9 @@ import { ToastPopup } from '@/components/popups/ToastPopup';
 
 import NFTManager from "@/abi/NFTManager.json";
 import { ShoppingCart, TrendingUp, Users, Clock, ExternalLink, User } from 'lucide-react';
-import { formatRelativeTime, truncateAddress } from '@/utils';
+import { formatRelativeTime, getTokenURI, truncateAddress } from '@/utils';
 import USDCAbi from "@/abi/USDC.json";
+import MintSuccessModal from '@/components/MintSuccessModal';
 interface PageProps {
     params: {
         id: string;
@@ -54,6 +54,16 @@ interface CollectionStats {
 
 interface GetCollectionStatsResponse {
   collectionStats: CollectionStats | null;
+}
+
+interface MintEventObj {
+  contractAddress: string;
+  owner: string;
+  name: string;
+  symbol: string;
+  description: string;
+  tokenId: number;
+  createdAt: number;
 }
 
 const GET_COLLECTION = gql`
@@ -95,7 +105,18 @@ const page: React.FC<PageProps> = ({ params }) => {
     const [loadingMessage, setLoadingMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [contractETHBalance, setContractETHBalance] = useState("0");
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isMinting, setIsMinting] = useState(false);
+
+    const [eventObj, setEventObj] = useState<MintEventObj>({
+            contractAddress: "",
+            owner: "",
+            name: "",
+            symbol: "",
+            description: "",
+            tokenId: 0,
+            createdAt: 0,
+        });
 
     const { isOpen: isToastOpen, openPopup: openToastPopup, closePopup: closeToastPopup } = useToastify();
     const { isOpen: isErrorOpen, openPopup: openErrorPopup, closePopup: closeErrorPopup } = useErrorPopup();
@@ -104,7 +125,7 @@ const page: React.FC<PageProps> = ({ params }) => {
         variables: { id }
     });
 
-    const { loading: collectionStatLoading, data: collectionStat, error: collectionStatError } = useQuery<GetCollectionStatsResponse>(GET_COLLECTION_STATS, {
+    const { loading: collectionStatLoading, data: collectionStat, error: collectionStatError, refetch } = useQuery<GetCollectionStatsResponse>(GET_COLLECTION_STATS, {
         variables: { id }
     });
 
@@ -132,15 +153,17 @@ const page: React.FC<PageProps> = ({ params }) => {
                 provider
             );
             const balance = await erc20contract.balanceOf(id);
-            console.log({balance})
-            // const contract = new ethers.Contract(
-            //     id,
-            //     NFTManager.abi,
-            //     signer
-            // );
+            console.log({balance});
 
-            // const tx = await contract.withdraw();
-            // await tx.wait();
+            const signer = await provider.getSigner();
+            const contract = new ethers.Contract(
+                NFTManager.address,
+                NFTManager.abi,
+                signer
+            );
+
+            const tx = await contract.withdraw();
+            await tx.wait();
             
             closeToastPopup();
             setLoadingMessage("");
@@ -156,22 +179,69 @@ const page: React.FC<PageProps> = ({ params }) => {
         try {
             setIsMinting(true);
             openToastPopup();
-            setLoadingMessage("Minting NFT...");
+            setLoadingMessage("Pinning Metadata to IPFS")
+            // prepare tokenURI
+            const metadata = {
+                name: data?.collectionCreated.name, // next time
+                description: data?.collectionCreated.description,
+                image: data?.collectionCreated.imageURI,
+            };
+            console.log(metadata);
+            const tokenURI = await getTokenURI(metadata);
+            console.log({tokenURI});
+
+            setLoadingMessage("Approving NFTManager...");
+            
             
             const provider = new ethers.BrowserProvider(window.ethereum);
             const signer = await provider.getSigner();
+
             const contract = new ethers.Contract(
-                id,
+                NFTManager.address,
                 NFTManager.abi,
                 signer
             );
+            console.log({id, tokenURI, price: data?.collectionCreated?.price});
+            // approve nftmanager to spend our usdc
+            const erc20contract = new ethers.Contract(
+                USDCAbi.address,
+                USDCAbi.abi,
+                signer
+            );
+            const approveTx = await erc20contract.approve(NFTManager.address, data?.collectionCreated?.price);
+            await approveTx.wait();
 
-            const tx = await contract.mint({ value: data?.collectionCreated?.price });
-            await tx.wait();
+            setLoadingMessage("Minting NFT...");
+
+            const tx = await contract.mintNFTFromCollection(id, tokenURI, data?.collectionCreated?.price);
+            const response = await tx.wait();
+            console.log({response});
+            console.log({logs: response.logs});
             
+            const filter = contract.filters.NFTCreated();
+            const events = await contract.queryFilter(filter, response.blockNumber);
+            console.log({events});
+
+            const eventObj = {
+                contractAddress: events[0].args[0],
+                owner: events[0].args[1],
+                name: events[0].args[2],
+                symbol: events[0].args[3],
+                description: events[0].args[4],
+                tokenId: Number(String(events[0].args[5])),
+                createdAt: Number(String(events[0].args[6])),
+            };
+
+            setEventObj(eventObj);
+
             closeToastPopup();
             setLoadingMessage("");
             setIsMinting(false);
+
+            setIsModalOpen(true);
+
+            refetch({id});
+
         } catch (err) {
             closeToastPopup();
             setErrorMessage(String(err));
@@ -217,6 +287,16 @@ const page: React.FC<PageProps> = ({ params }) => {
     return (
         <div className="min-h-screen bg-linear-to-br from-gray-900 via-gray-800 to-black text-white py-14 px-4 sm:px-6 lg:px-8 font-roboto">
             <div className="max-w-6xl mx-auto">
+                <ErrorPopup
+                    isOpen={isErrorOpen}
+                    onClose={closeErrorPopup}
+                    message={errorMessage}
+                    />
+                <ToastPopup 
+                    isVisible={isToastOpen}
+                    message={loadingMessage}
+                    
+                />
                 {/* Main Grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
                     {/* Left: Image */}
@@ -358,6 +438,15 @@ const page: React.FC<PageProps> = ({ params }) => {
                 isVisible={isToastOpen}
                 message={loadingMessage}    
             />
+
+            <MintSuccessModal
+                isOpen={isModalOpen} 
+                onClose={() => {
+                    setIsModalOpen(false);
+                }} 
+                eventObj={eventObj}
+                imageURI={collection?.imageURI || ""}
+             />
         </div>
     );
 };

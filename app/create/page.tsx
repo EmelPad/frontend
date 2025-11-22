@@ -93,6 +93,7 @@ const page: React.FC = () => {
         const tx = await contract.createCollection(name, symbol, description, priceInWei, totalSupply, imageURI);
         const response = await tx.wait();
         console.log(response);
+        console.log({logs: response.logs});////
         // read event log
         const filter = contract.filters.CollectionCreated();
         const events = await contract.queryFilter(filter, response.blockNumber);

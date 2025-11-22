@@ -62,7 +62,7 @@ export const CollectionCard: React.FC<CollectionCardProps> = ({
                     {/* Stats Grid */}
                     <div className="grid grid-cols-2 gap-3 mb-4 pb-4 border-b border-gray-700/50">
                         <div className="flex items-center gap-2">
-                            <Users className="w-4 h-4 text-gray-500" />
+                            {/* <Users className="w-4 h-4 text-gray-500" /> */}
                             <div>
                                 <p className="text-xs text-gray-500 uppercase tracking-wide">Supply</p>
                                 <p className="text-sm font-semibold text-white">{Number(collection.maxSupply).toLocaleString()}</p>
@@ -70,7 +70,8 @@ export const CollectionCard: React.FC<CollectionCardProps> = ({
                         </div>
                         <div>
                             <p className="text-xs text-gray-500 uppercase tracking-wide">Price</p>
-                            <p className="text-sm font-semibold text-blue-400">{Number(formattedPrice).toFixed(2)} USDC</p>
+                            <p className="text-sm font-semibold text-blue-400">{formattedPrice} USDC</p>
+                            
                         </div>
                     </div>
 

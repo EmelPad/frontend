@@ -19,6 +19,12 @@ export const truncateAddress = (
     return `${address.slice(0, startLength)}...${address.slice(-endLength)}`;
 };
 
+
+export const formatTimestamp = (timestamp: string) => {
+    const date = new Date(Number(timestamp) * 1000);
+    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+};
+
 export const formatRelativeTime = (timestamp: any): any => {
     const now = Date.now();
     const diffInSeconds = Math.floor((now - timestamp * 1000) / 1000);
