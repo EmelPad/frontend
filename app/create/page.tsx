@@ -172,7 +172,7 @@ const page: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-black py-12 font-roboto">
+        <div className="min-h-screen bg-linear-to-br from-gray-900 via-gray-800 to-black text-white py-12 font-roboto">
             <div className="container mx-auto px-4 max-w-2xl">
                 <h1 className="text-2xl font-bold text-white mb-8">
                     Create New Collection

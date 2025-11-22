@@ -23,8 +23,6 @@ export function useImageLoader(imageURI: string) {
           : IMAGE_SAMPLE;
     
 
-
-
         // Pre-load the image
         const img = new Image();
         img.src = src;

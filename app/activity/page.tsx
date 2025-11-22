@@ -1,68 +1,8 @@
-// 'use client';
-
-// bg-linear-to-br from-slate-950 via-slate-900 to-black
-
-
-// import React from 'react'
-// import { gql } from "@apollo/client";
-// import { useQuery } from "@apollo/client/react";
-
-// const GET_TRANSACTIONS = gql`
-//   query GetTransactions ($orderBy: String!) {
-//     transactions (orderBy: $orderBy) {    
-//         id
-//         type
-//         user
-//         collection
-//         tokenId
-//         timestamp
-//         txHash
-//     }
-//   }
-// `;
-
-// interface Transaction {
-//     id: string;
-//     type: string;
-//     user: string;
-//     collection: string;
-//     tokenId: string;
-//     timestamp: string;
-//     txHash: string;
-// }
-
-// interface GetTransactionsResponse {
-//   transactions: Transaction[];
-// }
-// const page = () => {
-
-//     const { loading, data, error } = useQuery<GetTransactionsResponse>(GET_TRANSACTIONS, {
-//         variables: { orderBy: "timestamp" }
-//     });
-
-//     if (loading) return <p>Loading...</p>; // Loading Spinner
-//     if (error) return <p>Error : {error.message}</p>;
-//   return (
-//     <div className="min-h-screen bg-linear-to-br from-gray-900 via-gray-800 to-black text-white py-14 px-4 sm:px-6 lg:px-8 font-roboto">
-//             <div className="max-w-6xl mx-auto">
-//             {
-//                 JSON.stringify(data?.transactions)
-//             }
-//             </div>
-
-//     </div>
-//   )
-// }
-
-// export default page;
-
-
 'use client';
 
 import React, { useState } from 'react'
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
-import { ExternalLink, ArrowUpRight, ArrowDownLeft, Zap } from 'lucide-react';
 import Transactions from "@/components/Transactions";
 
 const GET_TRANSACTIONS = gql`
