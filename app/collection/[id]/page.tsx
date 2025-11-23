@@ -6,22 +6,20 @@ import { useQuery } from "@apollo/client/react";
 import { useImageLoader } from '@/hooks/useImageLoader';
 import { useAccount } from 'wagmi';
 import { ethers, formatUnits, getAddress } from 'ethers';
+import { useParams } from 'next/navigation';
 
 import { useErrorPopup } from '@/hooks/useErrorPopup';
 import { ErrorPopup } from '@/components/popups/ErrorPopup';
 import { useToastify } from '@/hooks/useToastify';
 import { ToastPopup } from '@/components/popups/ToastPopup';
+import { toast } from 'sonner';
 
 import NFTManager from "@/abi/NFTManager.json";
-import { ShoppingCart, TrendingUp, Users, Clock, ExternalLink, User } from 'lucide-react';
+import { ExternalLink} from 'lucide-react';
 import { formatRelativeTime, getTokenURI, truncateAddress } from '@/utils';
 import USDCAbi from "@/abi/USDC.json";
 import MintSuccessModal from '@/components/MintSuccessModal';
-interface PageProps {
-    params: {
-        id: string;
-    }
-}
+
 
 interface Collection {
   id: string;
@@ -99,14 +97,17 @@ const GET_COLLECTION_STATS = gql`
   }
 `;
 
-const page: React.FC<PageProps> = ({ params }) => {
-    const { id } = params;
+const page: React.FC = () => {
+
+    const params = useParams();
+    const id = params.id as string;
 
     const [loadingMessage, setLoadingMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [contractETHBalance, setContractETHBalance] = useState("0");
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isMinting, setIsMinting] = useState(false);
+    const [isWithdrawing, setIsWithdrawing] = useState(false);
 
     const [eventObj, setEventObj] = useState<MintEventObj>({
             contractAddress: "",
@@ -143,6 +144,7 @@ const page: React.FC<PageProps> = ({ params }) => {
 
     const withdrawETHFromContract = async () => {
         try {
+            setIsWithdrawing(true);
             openToastPopup();
             setLoadingMessage("Withdrawing USDC from contract...");
             
@@ -162,9 +164,11 @@ const page: React.FC<PageProps> = ({ params }) => {
                 signer
             );
 
-            const tx = await contract.withdraw();
+            const tx = await contract.withdrawFromCollection(id);
             await tx.wait();
             
+            toast.success("USDC withdrawn successsfully.")
+            setIsWithdrawing(false);
             closeToastPopup();
             setLoadingMessage("");
             setContractETHBalance("0");
@@ -316,7 +320,7 @@ const page: React.FC<PageProps> = ({ params }) => {
                         <div>
                             <h1 className="md:text-2xl sm:text-xl font-bold mb-2">{collection?.name}<span className='pl-2'>{`(${collection?.symbol})`}</span></h1>
                             {collection?.description && (
-                                <p className="text-gray-300 text-base leading-relaxed text-sm">{collection.description}</p>
+                                <p className="text-gray-300 leading-relaxed text-sm">{collection.description}</p>
                             )}
                         </div>
 
@@ -420,7 +424,8 @@ const page: React.FC<PageProps> = ({ params }) => {
                                     onClick={withdrawETHFromContract}
                                     className="w-full bg-white text-black font-bold py-4 px-8 rounded-lg hover:bg-white/90 disabled:bg-white/50 disabled:cursor-not-allowed transition-colors flex justify-center shrink-0"
                                 >
-                                    Withdraw my USDC balance from contract: {formatUnits(contractETHBalance, 6)} USDC
+                                    
+                                    { isWithdrawing ? "Withdrawing USDC" : `Withdraw my USDC balance from contract: ${formatUnits(contractETHBalance, 6)} USDC`}
                                 </button>
                             )}
 

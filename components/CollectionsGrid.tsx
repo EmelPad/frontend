@@ -18,23 +18,10 @@ interface Collection {
     transactionHash: string;
 }
 
-interface NFTCreated {
-    id: string;
-    collectionAddress: string;
-    owner: string;
-    name: string;
-    symbol: string;
-    description: string;
-    tokenId: string;
-    createdAt: string;
-    blockNumber: string;
-    blockTimestamp: string;
-    transactionHash: string;
-}
 
 interface CollectionsProps {
     title: string;
-    collections: Collection[] | NFTCreated[];
+    collections: Collection[]
 }
 
 export const CollectionsGrid: React.FC<CollectionsProps> = ({

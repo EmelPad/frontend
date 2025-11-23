@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Lato, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import '@rainbow-me/rainbowkit/styles.css';
 import Providers from "@/providers/Providers";
+import { Toaster } from "sonner";
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
@@ -53,6 +54,7 @@ export default function RootLayout({
                     {children}
                 </div>
                 <Footer />
+                <Toaster />
             </Providers>
         </div>
       </body>

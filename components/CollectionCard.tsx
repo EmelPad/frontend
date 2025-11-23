@@ -23,39 +23,17 @@ interface Collection {
     transactionHash: string;
 }
 
-interface NFTCreated {
-    id: string;
-    collectionAddress: string;
-    owner: string;
-    name: string;
-    symbol: string;
-    description: string;
-    tokenId: string;
-    createdAt: string;
-    blockNumber: string;
-    blockTimestamp: string;
-    transactionHash: string;
-}
 
 
 interface CollectionCardProps {
-    collection: Collection | NFTCreated;
+    collection: Collection;
 }
 
 export const CollectionCard: React.FC<CollectionCardProps> = ({
     collection,
 }) => {
-    const imageURI = "imageURI" in collection ? collection.imageURI : "";
-    const { imageSrc } = useImageLoader(imageURI);
-
-    const price = "price" in collection ? collection.price : "0";
-    const formattedPrice = formatUnits(String(price), 6);
-
-    const timeCreated = "timeCreated" in collection ? collection.timeCreated : "0";
-    const maxSupply = "maxSupply" in collection ? collection.maxSupply : "0";
-
-    const tokenId = "tokenId" in collection ? collection.tokenId : "";
-
+    
+    const { imageSrc } = useImageLoader(collection.imageURI);
 
     return (
         <Link href={`/collection/${collection.id}`}>
@@ -79,14 +57,11 @@ export const CollectionCard: React.FC<CollectionCardProps> = ({
                 <div className="p-5">
                     {/* Title */}
                     <h3 className="text-lg font-bold text-white mb-1 line-clamp-1 group-hover:text-blue-400 transition-colors">
-                        {tokenId ? `#${tokenId}` : collection.name} 
+                        {collection.name} 
                     </h3>
 
 
-                    {/* Stats Grid & Footer */}
-
-                    {
-                        !tokenId && (
+               
                             <div>
 
                       
@@ -96,14 +71,14 @@ export const CollectionCard: React.FC<CollectionCardProps> = ({
                             
                             <div>
                                 <p className="text-xs text-gray-500 uppercase tracking-wide">Supply</p>
-                                <p className="text-sm font-semibold text-white">{Number(maxSupply).toLocaleString()}</p>
+                                <p className="text-sm font-semibold text-white">{Number(collection.maxSupply).toLocaleString()}</p>
                             </div>
                             
                         </div>
                         
                         <div>
                             <p className="text-xs text-gray-500 uppercase tracking-wide">Price</p>
-                            <p className="text-sm font-semibold text-blue-400">{formattedPrice} USDC</p>
+                            <p className="text-sm font-semibold text-blue-400">{formatUnits(String(collection.price), 6)} USDC</p>
                         
                         </div>
                           
@@ -115,7 +90,7 @@ export const CollectionCard: React.FC<CollectionCardProps> = ({
                             <p className="text-xs text-gray-500">Created</p>
                             
                             <p className="text-xs font-medium text-gray-300">
-                                {formatRelativeTime(timeCreated)}
+                                {formatRelativeTime(collection.timeCreated)}
                             </p>
                         
                         </div>
@@ -126,45 +101,10 @@ export const CollectionCard: React.FC<CollectionCardProps> = ({
                     </div>
 
                     </div>
-                      )
-                    }
-
                     
                 </div>
             </div>
         </Link>
     );
 };
-
-
-
-// interface Collection {
-//     id: string;
-//     collectionAddress: string;
-//     name: string;
-//     symbol: string;
-//     description: string;
-//     owner: string;
-//     timeCreated: string;
-//     price: string;
-//     maxSupply: string;
-//     imageURI: string;
-//     blockNumber: string;
-//     blockTimestamp: string;
-//     transactionHash: string;
-// }
-
-// interface NFTCreated {
-//     id: string;
-//     collectionAddress: string;
-//     owner: string;
-//     name: string;
-//     symbol: string;
-//     description: string;
-//     tokenId: string;
-//     createdAt: string;
-//     blockNumber: string;
-//     blockTimestamp: string;
-//     transactionHash: string;
-// }
 

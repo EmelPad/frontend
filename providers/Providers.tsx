@@ -8,7 +8,6 @@ import { ApolloProvider } from '@apollo/client/react';
 import { client } from "@/lib/apollo-client";
 
 
-
 const queryClient = new QueryClient();
 
 export default function Providers({
