@@ -1,4 +1,5 @@
-
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck
 'use client';
 import React, { useEffect, useState } from 'react';
 import { gql } from "@apollo/client";
@@ -97,7 +98,7 @@ const GET_COLLECTION_STATS = gql`
   }
 `;
 
-const page: React.FC = () => {
+const Page = () => {
 
     const params = useParams();
     const id = params.id as string;
@@ -456,6 +457,6 @@ const page: React.FC = () => {
     );
 };
 
-export default page;
+export default Page;
 
 

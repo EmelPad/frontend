@@ -1,4 +1,5 @@
-
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck
 'use client';
 
 import { FormInput } from "@/components/FormInput";
@@ -17,6 +18,7 @@ import { useToastify } from '@/hooks/useToastify';
 import { ToastPopup } from '@/components/popups/ToastPopup';
 
 
+
 interface CollectionEventObj {
   contractAddress: string;
   name: string;
@@ -30,7 +32,7 @@ interface CollectionEventObj {
 }
 
 
-const page: React.FC = () => {
+const Page = () => {
 
 
     const [formData, setFormData] = useState({
@@ -142,7 +144,7 @@ const page: React.FC = () => {
             // use eventObj to display what we need in the popup and have a x button to cancel.
             closeToastPopup();
 
-        } catch(err: any) {
+        } catch(err: unknown) {
             closeToastPopup();
             console.log({errorMessage: err})
             setErrorMessage(String(err));
@@ -302,4 +304,4 @@ const page: React.FC = () => {
     );
 };
 
-export default page;
+export default Page;

@@ -55,7 +55,7 @@ const Collections = () => {
         variables: { orderBy: activeSort, orderDirection }
     });
 
-    const handleSort = (sortType: any) => {
+    const handleSort = (sortType: string) => {
         if (sortType === activeSort) {
             // Toggle order direction if the same sort type is clicked
             setOrderDirection(prev => prev === 'asc' ? 'desc' : 'asc');

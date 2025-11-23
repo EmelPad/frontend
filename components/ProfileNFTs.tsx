@@ -17,12 +17,11 @@ interface NFTCreated {
 }
 
 interface ProfileNFTsProps {
-    title: string;
     collections: NFTCreated[];
 
 }
 
-const ProfileNFTs = ({title, collections}: ProfileNFTsProps) => {
+const ProfileNFTs = ({collections}: ProfileNFTsProps) => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
