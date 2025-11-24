@@ -275,12 +275,6 @@ const Page = () => {
         fetchBalance();
     }, [id, address]);
 
-    // if (loading || isLoading) return (
-    //     <div className="min-h-screen bg-linear-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center font-roboto">
-    //         <p className="text-gray-300 text-lg">Loading collection...</p>
-    //     </div>
-    // );
-
     if (error) return (
         <div className="min-h-screen bg-linear-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center font-roboto">
             <p className="text-red-400 text-lg">Error: {error.message}</p>
