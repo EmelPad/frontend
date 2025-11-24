@@ -79,7 +79,7 @@ const Collections = () => {
         console.log("Updated orderDirection:", orderDirection);
     }, [activeSort, orderDirection, refetch]); // Dependency on both activeSort and orderDirection
 
-    if (loading) return <p>Loading...</p>; // Loading Spinner
+    // if (loading) return <p>Loading...</p>; 
     if (error) return <p>Error : {error.message}</p>;
 
     return (
