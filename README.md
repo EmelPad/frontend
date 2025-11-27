@@ -36,7 +36,7 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
 
-NFTMANAGER_ADDRESS="0xd07E1979399a7a1Cc6D8A981B5B195bA801e10F3"
+NFTMANAGER_ADDRESS="0xe3b05F25C957722Da15133932E54667dF34e1aE9"
 USDC = "0x3600000000000000000000000000000000000000";
 
     "@apollo/client": "^3.12.3"
