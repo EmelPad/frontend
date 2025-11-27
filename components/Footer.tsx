@@ -51,7 +51,7 @@ const Footer = () => {
                 {/* Copyright */}
                 <div className="pt-8 border-t border-zinc-800/30 text-center">
                     <p className="text-zinc-500 text-sm">
-                        © 2024 EmelPad. All rights reserved.
+                        © 2025 EmelPad. All rights reserved.
                     </p>
                 </div>
             </div>
