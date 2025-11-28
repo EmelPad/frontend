@@ -405,7 +405,6 @@ const Page = () => {
                         <div className="space-y-3 pt-4">
                             <button
                                 onClick={handleMint}
-                                disabled={isMinting || !address}
                                 className="w-full bg-linear-to-br from-white to-gray-300 hover:from-gray-100 hover:to-gray-400 text-black font-bold py-4 px-8 rounded-lg disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 shrink-0"
                             >
                                 {/* <ShoppingCart className="w-5 h-5 shrink-0" /> */}
