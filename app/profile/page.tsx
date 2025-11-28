@@ -122,17 +122,17 @@ const Page = () => {
     const [activeTab, setActiveTab] = useState<'collections' | 'nfts' | 'transactions'>('collections');
 
     const { loading, data, error } = useQuery<GetCollectionsResponse>(GET_COLLECTIONS, { 
-        variables: { owner: getAddress(String(address)) || '', orderBy: "timeCreated", orderDirection: "desc" },
+        variables: address ? { owner: getAddress(String(address)) || '', orderBy: "timeCreated", orderDirection: "desc" } : undefined,
         skip: !address
     }); 
 
     const { loading: nftsLoading, data: nfts, error: nftsError } = useQuery<GetNftsCreatedResponse>(GET_NFTSCREATED, { 
-        variables: { owner: getAddress(String(address)) || '', orderBy: "createdAt", orderDirection: "desc" },
+        variables: address ? { owner: getAddress(String(address)) || '', orderBy: "createdAt", orderDirection: "desc" } : undefined,
         skip: !address
     }); 
 
     const { loading: transactionsLoading, data: transactionsData, error: transactionsError } = useQuery<GetTransactionsResponse>(GET_TRANSACTIONS, {
-        variables: { user: getAddress(String(address)) || '', orderBy: "timestamp", orderDirection: "desc" },
+        variables: address ? { user: getAddress(String(address)) || '', orderBy: "timestamp", orderDirection: "desc" } : undefined,
         skip: !address
     });
 
