@@ -9,6 +9,7 @@ import { useState } from "react";
 import { CollectionsGrid } from "@/components/CollectionsGrid";
 import Transactions from "@/components/Transactions";
 import ProfileNFTs from "@/components/ProfileNFTs";
+import { getAddress } from "ethers";
 
 interface Collection {
   id: string;
@@ -65,7 +66,7 @@ interface GetTransactionsResponse {
 
 const GET_COLLECTIONS = gql`
   query GetCollections ($owner: String!, $orderBy: String!, $orderDirection: String!) {
-    collectionCreateds (owner: $owner, orderBy: $orderBy, orderDirection: $orderDirection) {
+    collectionCreateds (where: {owner: $owner}, orderBy: $orderBy, orderDirection: $orderDirection) {
         id
         collectionAddress
         name
@@ -85,7 +86,7 @@ const GET_COLLECTIONS = gql`
 
 const GET_NFTSCREATED = gql`
   query GetNFTScreated ($owner: String!, $orderBy: String!, $orderDirection: String!) {
-    nftcreateds (owner: $owner, orderBy: $orderBy, orderDirection: $orderDirection) {
+    nftcreateds (where: {owner: $owner}, orderBy: $orderBy, orderDirection: $orderDirection) {
         id
         collectionAddress
         owner
@@ -103,8 +104,8 @@ const GET_NFTSCREATED = gql`
 `;
 
 const GET_TRANSACTIONS = gql`
-  query GetTransactions ($owner: String!, $orderBy: String!, $orderDirection: String!) {
-    transactions (owner: $owner, orderBy: $orderBy, orderDirection: $orderDirection) {
+  query GetTransactions ($user: String!, $orderBy: String!, $orderDirection: String!) {
+    transactions (where: {user: $user}, orderBy: $orderBy, orderDirection: $orderDirection) {
         id
         type
         user
@@ -121,17 +122,17 @@ const Page = () => {
     const [activeTab, setActiveTab] = useState<'collections' | 'nfts' | 'transactions'>('collections');
 
     const { loading, data, error } = useQuery<GetCollectionsResponse>(GET_COLLECTIONS, { 
-        variables: { owner: address || '', orderBy: "timeCreated", orderDirection: "desc" },
+        variables: { owner: getAddress(address).toLowerCase() || '', orderBy: "timeCreated", orderDirection: "desc" },
         skip: !address
     }); 
 
     const { loading: nftsLoading, data: nfts, error: nftsError } = useQuery<GetNftsCreatedResponse>(GET_NFTSCREATED, { 
-        variables: { owner: address || '', orderBy: "createdAt", orderDirection: "desc" },
+        variables: { owner: getAddress(address).toLowerCase() || '', orderBy: "createdAt", orderDirection: "desc" },
         skip: !address
     }); 
 
     const { loading: transactionsLoading, data: transactionsData, error: transactionsError } = useQuery<GetTransactionsResponse>(GET_TRANSACTIONS, {
-        variables: { owner: address || '', orderBy: "timestamp", orderDirection: "desc" },
+        variables: { user: getAddress(address).toLowerCase() || '', orderBy: "timestamp", orderDirection: "desc" },
         skip: !address
     });
 
